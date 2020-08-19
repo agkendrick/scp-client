@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import getCalculations from './calcService';
 import SearchSelector from './SeachSelector';
 
-const Search = ({ setLastSearched, setCalculations }) => {
+const Search = ({ setLastSearched, setCalculations, setLoading }) => {
 
     const [input, setInput] = useState({'zip': '', 'city': '', 'coordinates': ['', '']});
     const [searchBy, setSearchBy] = useState('city');
@@ -48,7 +48,9 @@ const Search = ({ setLastSearched, setCalculations }) => {
                 searchString = `${input[searchBy][0]}:${input[searchBy][1]}`;
             }
 
+            setLoading(true);
             const { data: { mean, median, mode } } = await getCalculations(searchBy, searchString);
+            setLoading(false);
             setCalculations([mean, median, mode]);
             setLastSearched([searchBy , input[searchBy]]);
           }

@@ -2,17 +2,23 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import Search from './Search';
 import getCalculations from './calcService';
+import Loader from 'react-loader-spinner'
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 
 function App() {
 
   const [calculations, setCalculations] = useState(null);
-  const [lastSearched, setLastSearched] = useState(['', ''])
+  const [lastSearched, setLastSearched] = useState(['', '']);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     
     (async () => {
       try {
+
+        setLoading(true);
         const { data: { mean, median, mode } } = await getCalculations('coordinates', '30.2240897:-92.01984270000003');
+        setLoading(false);
         setCalculations([mean, median, mode]);
         setLastSearched(['coordinates' , ['30.2240897', '-92.01984270000003']]);
       }
@@ -27,7 +33,8 @@ function App() {
   
   return (
     <div className="App">
-      { calculations && 
+      { loading && <Loader type="Puff" color="#00BFFF" height={500} width={500} /> }
+      { calculations && !loading &&
         <React.Fragment>
           <div>
             <h1>Showing calculations for </h1>{ formatLastSearched(lastSearched) }
@@ -43,7 +50,7 @@ function App() {
           </div>
         </React.Fragment>
       }
-      <Search setLastSearched={ setLastSearched } setCalculations={ setCalculations } />
+      { !loading && <Search setLastSearched={ setLastSearched } setCalculations={ setCalculations } setLoading={ setLoading } /> }
     </div>
   );
 }
