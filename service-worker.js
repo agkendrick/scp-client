@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/scp-client/precache-manifest.eb02b48c9f23a9dfd69cc5087e596bad.js"
+  "/scp-client/precache-manifest.971fbbcd53605bf2f2b2d0543c6fc0db.js"
 );
 
 self.addEventListener('message', (event) => {
